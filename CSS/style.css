@@ -1,0 +1,388 @@
+/*
+  HighPalace Linktree Landing Page
+  NOTA: Antes de desplegar, colocar las fuentes en fonts/ y el logo en assets/
+  - fonts/LnationPersonalUse.woff2
+  - fonts/AlphaSmoke.woff2
+  - assets/logo.png
+*/
+
+/* ==================== FONTS ==================== */
+@font-face {
+    font-family: 'Lnation Personal Use';
+    src: url('fonts/Lunation.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'AlphaSmoke';
+    src: url('fonts/AlphaSmoke.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ==================== VARIABLES ==================== */
+:root {
+    --color-primary-dark: #031226;
+    --color-green-main: #3FA646;
+    --color-green-light: #97BF95;
+    --color-bg-light: #F2F2F2;
+    --font-main: 'Lnation Personal Use', sans-serif;
+    --font-display: 'AlphaSmoke', serif;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-glow: 0 0 20px rgba(63, 166, 70, 0.4);
+    --shadow-card: 0 8px 32px rgba(3, 18, 38, 0.15);
+}
+
+/* ==================== RESET & BASE ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, #052a4d 50%, var(--color-primary-dark) 100%);
+    color: var(--color-bg-light);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ==================== SMOKE BACKGROUND ==================== */
+.smoke-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.smoke-svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+}
+
+.smoke-blob {
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+.smoke-blob-1 {
+    animation: float1 12s infinite, drift1 8s infinite alternate;
+}
+
+.smoke-blob-2 {
+    animation: float2 15s infinite, drift2 10s infinite alternate;
+}
+
+.smoke-blob-3 {
+    animation: float3 18s infinite, drift3 12s infinite alternate;
+}
+
+.smoke-blob-4 {
+    animation: float4 14s infinite, drift4 9s infinite alternate;
+}
+
+@keyframes float1 {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-50px) scale(1.1); }
+}
+
+@keyframes float2 {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(40px) scale(0.95); }
+}
+
+@keyframes float3 {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+}
+
+@keyframes float4 {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(60px) scale(0.9); }
+}
+
+@keyframes drift1 {
+    from { transform: translateX(0); }
+    to { transform: translateX(100px); }
+}
+
+@keyframes drift2 {
+    from { transform: translateX(0); }
+    to { transform: translateX(-80px); }
+}
+
+@keyframes drift3 {
+    from { transform: translateX(0); }
+    to { transform: translateX(60px); }
+}
+
+@keyframes drift4 {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100px); }
+}
+
+/* ==================== CONTAINER ==================== */
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    padding: 0 20px;
+}
+
+/* ==================== HEADER ==================== */
+.header-section {
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.logo-img {
+    max-width: 180px;
+    height: auto;
+    filter: drop-shadow(0 4px 12px rgba(63, 166, 70, 0.3));
+    transition: var(--transition-smooth);
+}
+
+.logo-img:hover {
+    filter: drop-shadow(0 6px 20px rgba(63, 166, 70, 0.5));
+    transform: scale(1.05);
+}
+
+.tagline {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-green-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+/* ==================== LINKS SECTION ==================== */
+.links-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0 40px;
+}
+
+.link-card {
+    position: relative;
+    display: block;
+    background: rgba(242, 242, 242, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(151, 191, 149, 0.2);
+    border-radius: 16px;
+    padding: 20px 24px;
+    text-decoration: none;
+    color: var(--color-bg-light);
+    transition: var(--transition-smooth);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+    box-shadow: var(--shadow-card);
+}
+
+.link-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.link-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(63, 166, 70, 0.15), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.link-card:hover::before {
+    opacity: 1;
+}
+
+.link-card:hover,
+.link-card:focus {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-glow), var(--shadow-card);
+    border-color: var(--color-green-main);
+    background: rgba(242, 242, 242, 0.12);
+}
+
+.link-card:focus {
+    outline: 2px solid var(--color-green-main);
+    outline-offset: 4px;
+}
+
+.link-card-inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.link-icon {
+    font-size: 2rem;
+    color: var(--color-green-main);
+    transition: var(--transition-smooth);
+    flex-shrink: 0;
+}
+
+.link-card:hover .link-icon {
+    transform: scale(1.15) rotate(5deg);
+    filter: drop-shadow(0 0 8px var(--color-green-main));
+}
+
+.link-text {
+    flex-grow: 1;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.link-arrow {
+    font-size: 1.5rem;
+    color: var(--color-green-light);
+    transition: var(--transition-smooth);
+    opacity: 0.7;
+}
+
+.link-card:hover .link-arrow {
+    transform: translateX(8px);
+    opacity: 1;
+    color: var(--color-green-main);
+}
+
+/* ==================== FOOTER ==================== */
+.footer-section {
+    border-top: 1px solid rgba(151, 191, 149, 0.2);
+    animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.footer-description {
+    font-size: 0.95rem;
+    color: var(--color-green-light);
+    line-height: 1.6;
+}
+
+.legal-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.legal-link {
+    color: var(--color-bg-light);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: var(--transition-smooth);
+    opacity: 0.8;
+}
+
+.legal-link:hover,
+.legal-link:focus {
+    color: var(--color-green-main);
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.legal-separator {
+    color: var(--color-green-light);
+    opacity: 0.5;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: var(--color-green-light);
+    opacity: 0.7;
+}
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 576px) {
+    .logo-img {
+        max-width: 140px;
+    }
+
+    .tagline {
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+    }
+
+    .link-card {
+        padding: 16px 20px;
+    }
+
+    .link-icon {
+        font-size: 1.75rem;
+    }
+
+    .link-text {
+        font-size: 1.1rem;
+    }
+
+    .link-arrow {
+        font-size: 1.25rem;
+    }
+
+    .footer-description {
+        font-size: 0.9rem;
+    }
+
+    .legal-links {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .legal-separator {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
